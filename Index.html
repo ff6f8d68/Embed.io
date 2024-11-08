@@ -82,7 +82,7 @@
             }
 
             // Generate the embed URL
-            const embedUrl = `embed.io?embedID=${videoID}`;
+            const embedUrl = `?https://embed-io.netlify.app?embedID=${videoID}`;
             document.getElementById('embedUrl').innerHTML = `Embed URL: <a href="${embedUrl}" target="_blank">${embedUrl}</a>`;
 
             // Generate the embedded video player

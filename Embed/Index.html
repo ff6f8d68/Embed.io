@@ -31,26 +31,36 @@
     </div>
 
     <script>
-        // Function to get the value of the 'embedID' parameter from the URL
-        function getEmbedID() {
+        // Function to get all URL parameters as an object
+        function getUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('embedID');
+            const params = {};
+            for (const [key, value] of urlParams.entries()) {
+                params[key] = value;
+            }
+            return params;
         }
 
-        // Load the video with autoplay
+        // Load the video with dynamic parameters
         function loadVideo() {
-            const embedID = getEmbedID();
+            const params = getUrlParams();
 
-            // Check if the embedID parameter exists
+            // Get the embedID and remove it from the parameters object
+            const embedID = params.embedID;
             if (!embedID) {
                 document.getElementById('videoContainer').innerHTML = "<p>Error: No video ID provided.</p>";
                 return;
             }
+            delete params.embedID;
 
-            // Display the YouTube video with autoplay enabled
+            // Construct additional query parameters for YouTube embed
+            const queryString = new URLSearchParams(params).toString();
+            const youtubeUrl = `https://www.youtube.com/embed/${embedID}?${queryString}`;
+
+            // Display the YouTube video with the provided parameters
             document.getElementById('videoContainer').innerHTML = `
                 <iframe width="100%" height="450" 
-                        src="https://www.youtube.com/embed/${embedID}?autoplay=1" 
+                        src="${youtubeUrl}" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
